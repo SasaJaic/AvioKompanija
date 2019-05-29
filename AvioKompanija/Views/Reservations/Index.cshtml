@@ -1,0 +1,56 @@
+﻿@model IEnumerable<AvioKompanija.Models.Reservation>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="padding-top: 60px; text-align: center;">Reservations</h2>
+
+
+<table class="table table-striped"  style="margin-bottom:335px;">
+    <tr>
+        <th>
+            From
+        </th>
+        <th>
+            To
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight.time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfTickets)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var fromAirportStr = item.Flight.FromAirport.Name + " (" + item.Flight.FromAirport.City.State.Name + "-" + item.Flight.FromAirport.City.Name + ")";
+        var toAirportStr = item.Flight.ToAirport.Name + " (" + item.Flight.ToAirport.City.State.Name + "-" + item.Flight.ToAirport.City.Name + ")";
+           
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => fromAirportStr)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => toAirportStr)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Flight.time)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.NumberOfTickets)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.Username)
+    </td>
+
+</tr>
+    }
+
+</table>

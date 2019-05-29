@@ -1,0 +1,99 @@
+﻿@model AvioKompanija.ViewModels.BookFlightViewModel
+
+@{
+    ViewBag.Title = "Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 style="padding-top: 70px; text-align: center;">Book a flight</h2>
+
+<div class="text-danger">@ViewBag.ErrorMessage</div>
+<div class="text-danger">@ViewBag.CountErrorMessage</div>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight.Avion)
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.Flight.FromAirport) + "(State-City)")
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.Flight.ToAirport) + " (State-City)")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight.price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight.time)
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.Flight.TicketsLeft) + " /Capacity")
+        </th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Flight.Avion.Model)
+        </td>
+        <td>
+            @{
+                var item = Model.Flight;
+                var fromAirportStr = item.FromAirport.Name + " (" + item.FromAirport.City.State.Name + "-" + item.FromAirport.City.Name + ")";
+                var toAirportStr = item.ToAirport.Name + " (" + item.ToAirport.City.State.Name + "-" + item.ToAirport.City.Name + ")";
+                var ticketsStr = item.TicketsLeft + "/" + item.Avion.Capacity;
+            }
+
+            @Html.DisplayFor(modelItem => fromAirportStr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => toAirportStr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => ticketsStr)
+        </td>
+    </tr>
+
+</table>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumOfTickets, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumOfTickets, new { htmlAttributes = new { @class = "form-control" } })
+                /@Html.DisplayFor(model => model.Flight.TicketsLeft)
+                @Html.ValidationMessageFor(model => model.NumOfTickets, "", new { @class = "text-danger" })
+            </div>
+            <div class="text-danger">@ViewBag.TicketsErrorMessage</div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div style="padding: 20px 0 20px 40px; margin-bottom: 110px;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - LuftStrasse</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://code.jquery.com/jquery-3.4.0.js"
+            integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+            crossorigin="anonymous">
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        /*#meni {
+            background-color: transparent;
+            border-color: transparent;
+            transition: 1s;
+            overflow: hidden;
+        }
+
+        #meni .black ul{
+            background: black;
+            transition: 1s;
+         }*/
+
+        #slika img {
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-attachment: fixed;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: 'Exo', sans-serif;
+            box-sizing: border-box;
+        }
+
+            .container .navbar-header {
+                color: orangered;
+            }
+
+        .navbar {
+            padding: 10px;
+        }
+
+        .nav .navbar-nav {
+            justify-content: center;
+        }
+
+        .strela #str {
+            max-width: 150px;
+            height: 15%;
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+
+        .statment {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 4em;
+            color: orangered;
+            text-shadow: 2px 2px black;
+        }
+
+            .statment h1 {
+                color: orangered;
+                font-size: 2em;
+                font-weight: 500;
+                letter-spacing: 5px;
+                text-shadow: 2px 2px black;
+            }
+
+        #heder li a {
+            color: orangered;
+            justify-content: center;
+        }
+
+        #heder {
+            float: right;
+            padding-right: 3em;
+        }
+
+        .navbar-header .navbar-brand {
+            color: orangered;
+            padding-left: 3em;
+            font-size: 1.5em;
+        }
+
+        .row {
+            border-top: 2px solid orange;
+            border-bottom: 2px solid orange;
+            width: 90%;
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            padding-top: 100px;
+            margin-top: 10px;
+        }
+
+            .row .col-md-4 {
+                box-sizing: border-box;
+                width: 25%;
+                height: 80%;
+                border: 1px solid black;
+                text-align: justify;
+                justify-content: center;
+                align-content: center;
+                padding: 20px;
+                box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.7);
+                background-color: white;
+            }
+
+        .serviceimg {
+            width: 100%;
+            height: 50%;
+        }
+
+        footer {
+            background-color: orangered;
+            height: 200px;
+            width: 100%;
+            text-align: center;
+            padding: 0;
+            position: relative;
+            bottom: 0;
+        }
+
+            footer p {
+                padding: 15px 0;
+            }
+
+        hr {
+            width: 30%;
+            border: 1px solid black;
+            color: black;
+        }
+
+        .extras {
+            display: flex;
+            margin: 0 auto;
+            justify-content: space-around;
+            width: 90%;
+        }
+
+        h2 {
+            padding: 20px;
+        }
+
+        h3 {
+            margin: 0;
+            padding: 10px;
+        }
+
+        .plus {
+            width: 25%;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="meni" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("LuftStrasse", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul id="heder" class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (Session["Role"] != null && (string)Session["Role"] == "admin")
+                        {
+                            <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                            <li>@Html.ActionLink("Planes", "Index", "Avions")</li>
+                            <li>@Html.ActionLink("Airports", "Index", "Airports")</li>
+                        }
+                        else if (Session["Role"] != null && (string)Session["Role"] == "user")
+                        {
+
+                        }
+                        int id = Session["Id"] != null ? (int)Session["Id"] : 0;
+                        <li>@Html.ActionLink("Reservations", "Index", "Reservations")</li>
+                        <li>@Html.ActionLink("Your Account", "Details", "Users", new { id = id }, null)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("LOG IN", "Login", "Users")</li>                      
+                    }
+                    <li>@Html.ActionLink("Flights", "Index", "Flights")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("LOG OUT", "LogOut", "Users")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+       
+        <footer>
+            <p>Follow us on social media:</p>
+
+            <a href="https://www.facebook.com/Lufthansa/" target="_blank">
+                <img src="~/Content/img/icons8-facebook-circled-48.png" />
+            </a>
+            <a href="https://www.instagram.com/lufthansa/" target="_blank">
+                <img src="~/Content/img/icons8-instagram-48.png" />
+            </a>
+            <a href="https://twitter.com/lufthansa" target="_blank">
+                <img src="~/Content/img/icons8-twitter-circled-48.png" /></a>
+            <hr>
+            <p style="padding:0;">&copy; @DateTime.Now.Year LuftStrasse</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+   
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

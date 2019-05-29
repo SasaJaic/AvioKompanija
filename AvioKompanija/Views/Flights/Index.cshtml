@@ -1,0 +1,89 @@
+﻿@model IEnumerable<AvioKompanija.Models.Flight>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    if (Session["Role"] != null && (string)Session["Role"] == "admin")
+    {
+        <p style="padding-left: 40px;">
+            @Html.ActionLink("Create New", "Create")
+        </p>
+    }
+}
+<h3 style="text-align:center; padding-bottom:20px;">Flights</h3>
+<table class="table table-striped" style="margin-bottom:180px;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Avion)
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.FromAirport) + "(State-City)")
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.ToAirport) + " (State-City)")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+        <th>
+            @(@Html.DisplayNameFor(model => model.TicketsLeft) + " /Capacity")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Avion.Model)
+            </td>
+            <td>
+                @{
+                    var fromAirportStr = item.FromAirport.Name + " (" + item.FromAirport.City.State.Name + "-" + item.FromAirport.City.Name + ")";
+                    var toAirportStr = item.ToAirport.Name + " (" + item.ToAirport.City.State.Name + "-" + item.ToAirport.City.Name + ")";
+                    var ticketsStr = item.TicketsLeft + "/" + item.Avion.Capacity;
+                }
+
+                @Html.DisplayFor(modelItem => fromAirportStr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => toAirportStr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => ticketsStr)
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (Session["Role"] != null && (string)Session["Role"] == "admin")
+                    {
+                        //@Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) @(" | ")
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    }
+                    else if (Session["Role"] != null && (string)Session["Role"] == "user")
+                    {
+                        @Html.ActionLink("Book", "Book", new { id = item.Id })
+                    }
+                }
+
+
+            </td>
+        </tr>
+    }
+
+</table>
